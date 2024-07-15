@@ -272,3 +272,5 @@ C:\Users\thiem\Fullstack\Asp.net\Pharmacy\obj\Debug\net8.0\refint\PharmacyApi.dl
 C:\Users\thiem\Fullstack\Asp.net\Pharmacy\obj\Debug\net8.0\PharmacyApi.pdb
 C:\Users\thiem\Fullstack\Asp.net\Pharmacy\obj\Debug\net8.0\PharmacyApi.genruntimeconfig.cache
 C:\Users\thiem\Fullstack\Asp.net\Pharmacy\obj\Debug\net8.0\ref\PharmacyApi.dll
+C:\Users\thiem\Fullstack\Asp.net\Pharmacy\obj\Debug\net8.0\PharmacyApi.sourcelink.json
+C:\Users\thiem\Fullstack\Asp.net\Pharmacy\bin\Debug\net8.0\BCrypt.Net-Next.dll

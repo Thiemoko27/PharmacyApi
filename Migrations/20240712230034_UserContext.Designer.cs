@@ -11,8 +11,8 @@ using PharmacyApi.Data;
 namespace PharmacyApi.Migrations
 {
     [DbContext(typeof(UserDataBaseContext))]
-    [Migration("20240707200129_UserDataBase")]
-    partial class UserDataBase
+    [Migration("20240712230034_UserContext")]
+    partial class UserContext
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,10 @@ namespace PharmacyApi.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

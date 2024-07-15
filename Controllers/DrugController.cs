@@ -22,7 +22,6 @@ public class DrugController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [Authorize(Policy = "User")]
     public IActionResult GetById(int id) {
         var drug = _context.Drugs.Find(id);
         
@@ -43,7 +42,6 @@ public class DrugController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize(Policy = "Admin")]
     public IActionResult Update([FromBody] Drug updatedDrug, int id) {
         var drug = _context.Drugs.Find(id);
 

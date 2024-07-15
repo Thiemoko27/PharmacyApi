@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PharmacyApi.Data;
-using PharmacyApi.Services;
 
 namespace PharmacyApi
 {
@@ -31,8 +30,6 @@ namespace PharmacyApi
 
             builder.Services.AddControllers();
 
-            builder.Services.AddScoped<JwtService>();
-
             var jwtkey = builder.Configuration["jwt:key"]
                 ?? throw new ArgumentNullException("Jwt:Key", "Jwt:Key is not configured");
 
@@ -48,22 +45,21 @@ namespace PharmacyApi
 
             var key = Encoding.UTF8.GetBytes(jwtkey);
 
-            builder.Services.AddAuthentication(options => {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options => {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
                     ValidateIssuer = true,
-                    ValidIssuer = jwtissuer,
                     ValidateAudience = true,
-                    ValidAudience = jwtAudience,
                     ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtissuer,
+                    ValidAudience = jwtAudience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtkey))
                 };
             });
 
@@ -104,10 +100,6 @@ namespace PharmacyApi
             app.MapControllers();
 
             app.Run();
-        }
-
-        public static void CreationDefaultAdmin() {
-
         }
     }
 }
