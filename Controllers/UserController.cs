@@ -25,8 +25,13 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [Authorize(Policy = "Admin")]
     public IActionResult GetById(int id) {
+        var userId = User.FindFirst("userId")?.Value;
+
+        if (userId == null || userId != id.ToString()) {
+            return Forbid();
+        }
+
         var user = _userContext.Users.Find(id);
 
         if(user == null) {
@@ -47,7 +52,6 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize(Policy = "Admin")]
     public IActionResult UpdateUser([FromBody] User updateUser, int id) {
         var user = _userContext.Users.Find(id);
 
@@ -55,12 +59,8 @@ public class UserController : ControllerBase
             return NotFound();
         }
 
-        if(!string.IsNullOrEmpty(updateUser.Password)) {
-            user.Password = HashPassword(updateUser.Password);
-        }
-
+        user.Password = HashPassword(updateUser.Password);
         user.UserName = updateUser.UserName;
-        user.Password = updateUser.Password;
 
         _userContext.Users.Update(user);
         _userContext.SaveChanges();
